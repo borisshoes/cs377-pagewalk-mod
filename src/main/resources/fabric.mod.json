@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "multilevelpagetablevisualizer",
+  "version": "${version}",
+  "name": "MultiLevelPageTableVisualizer",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/Boris/MultiLevelPageTableVisualizer"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/MultiLevelPageTableVisualizer/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "net.borisshoes.multilevelpagetablevisualizer.MultiLevelPageTableVisualizer"
+    ]
+  },
+  "mixins": [
+    "MultiLevelPageTableVisualizer.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.13",
+    "fabric": "*",
+    "minecraft": "1.19.3"
+  }
+}
