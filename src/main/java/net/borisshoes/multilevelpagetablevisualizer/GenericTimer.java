@@ -2,6 +2,7 @@ package net.borisshoes.multilevelpagetablevisualizer;
 
 import java.util.TimerTask;
 
+// Timer Class I didn't end up needing but is useful to have for future additions
 public class GenericTimer {
    protected int timer;
    protected TimerTask onTimer;

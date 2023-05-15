@@ -39,7 +39,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class MultiLevelPageTableVisualizer implements ModInitializer {
    
-   private static final Logger logger = LogManager.getLogger("MLPTV"); // Error logger
+   public static final Logger logger = LogManager.getLogger("MLPTV"); // Error logger
    public static final ArrayList<Block> BYTE_BLOCKS = new ArrayList<>(); // List of blocks and what byte value they represent
    public static ThreeLevelTable memory; // Memory object of our table simulator
    public static final HashMap<UUID,GenericTimer> SERVER_TIMER_CALLBACKS = new HashMap<>(); // Timer Callbacks
@@ -122,7 +122,7 @@ public class MultiLevelPageTableVisualizer implements ModInitializer {
                      }
                   }else if(hitBlock == Blocks.WHITE_CONCRETE_POWDER || hitBlock == Blocks.GRAY_CONCRETE_POWDER){
                      ArrayList<Integer> bits = new ArrayList<>();
-                     for(int i = -3; i <= 3; i++){
+                     for(int i = -3; i <= 3; i++){ // Find adjacent address bit blocks
                         Block block = world.getBlockState(result.getBlockPos().mutableCopy().add(i,0,0)).getBlock();
                         if(block == Blocks.WHITE_CONCRETE_POWDER){
                            bits.add(1);
@@ -148,7 +148,7 @@ public class MultiLevelPageTableVisualizer implements ModInitializer {
             }
          }
          
-         // Tick Timer Callbacks
+         // Tick Timer Callbacks (I didn't end up needing these, but the code is useful to have for future use)
          ArrayList<UUID> toRemove = new ArrayList<>();
          Iterator<Map.Entry<UUID, GenericTimer>> itr = SERVER_TIMER_CALLBACKS.entrySet().iterator();
          
@@ -310,7 +310,6 @@ public class MultiLevelPageTableVisualizer implements ModInitializer {
    
    // Test function for debugging
    private static int testMemory(CommandContext<ServerCommandSource> ctx){
-      sendTitleMessage(ctx.getSource().getPlayer(),5,40,20);
       return 0;
    }
    
@@ -334,14 +333,6 @@ public class MultiLevelPageTableVisualizer implements ModInitializer {
       }catch(Exception e){
          return -1;
       }
-   }
-   
-   public static void sendTitleMessage(ServerPlayerEntity player, int fadeIn, int stay, int fadeOut){
-      player.networkHandler.sendPacket(new TitleFadeS2CPacket(fadeIn, stay, fadeOut));
-      player.networkHandler.sendPacket(new SubtitleS2CPacket(MutableText.of(new LiteralTextContent("Test Sub Title..."))
-            .formatted(Formatting.GREEN, Formatting.ITALIC)));
-      player.networkHandler.sendPacket(new TitleS2CPacket(MutableText.of(new LiteralTextContent("Test Title!"))
-            .formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD)));
    }
    
    

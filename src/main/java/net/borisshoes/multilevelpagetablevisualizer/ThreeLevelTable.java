@@ -57,7 +57,7 @@ public class ThreeLevelTable {
             rand1 = ((short)(Math.random()*512));
             addr1 = (short) (rand1*16);
          }while(i == addr1 || tables[addr1] != 0x0);
-         System.out.printf("Inserting addr1: %x at %d\n",addr1,i);
+         //System.out.printf("Inserting addr1: %x at %d\n",addr1,i);
          tables[i] = (short) ((addr1 << 3) | 0x1);
          
          // Set up PMD
@@ -67,7 +67,7 @@ public class ThreeLevelTable {
                rand2 = ((short)(Math.random()*512));
                addr2 = (short) (rand2*16);
             }while(j == addr2 || tables[addr2] != 0x0);
-            System.out.printf("Inserting addr2: %x at %d\n",addr2,j);
+            //System.out.printf("Inserting addr2: %x at %d\n",addr2,j);
             tables[j] = (short) ((addr2 << 3) | 0x3);
             
             // Set up PTE
@@ -313,26 +313,26 @@ public class ThreeLevelTable {
    public byte pageWalkByte(short vaddr){
       short pmd = virt_to_pgd(PTBR, vaddr);
       if (pmd == -1) {
-         System.out.println("\tsegfault: Page Middle Directory does not exist");
+         MultiLevelPageTableVisualizer.logger.warn("\tsegfault: Page Middle Directory does not exist");
          return 0;
       }
-      //System.out.println("PMD: "+pmd);
+      //MultiLevelPageTableVisualizer.logger.warn("PMD: "+pmd);
       
       // 2) get the PTE address
       short pte = virt_to_pmd(pmd, vaddr);
       if (pte == -1) {
-         System.out.println("\tsegfault: Page Table Entry does not exist");
+         MultiLevelPageTableVisualizer.logger.warn("\tsegfault: Page Table Entry does not exist");
          return 0;
       }
-      //System.out.println("PTE: "+pte);
+      //MultiLevelPageTableVisualizer.logger.warn("PTE: "+pte);
       
       // 3) get the frame number
       short phs = virt_to_pte(pte, vaddr);
       if (phs == -1) {
-         System.out.println("\tsegfault: Invalid physical memory");
+         MultiLevelPageTableVisualizer.logger.warn("\tsegfault: Invalid physical memory");
          return 0;
       }
-      //System.out.println("Phys: "+phs);
+      //MultiLevelPageTableVisualizer.logger.warn("Phys: "+phs);
       
       // 4) get the value at that location
       byte val = virt_to_phys(phs, vaddr);
@@ -344,26 +344,26 @@ public class ThreeLevelTable {
    public Pair<Integer,Integer> pageWalkPage(short vaddr){
       short pmd = virt_to_pgd(PTBR, vaddr);
       if (pmd == -1) {
-         System.out.println("\tsegfault: Page Middle Directory does not exist");
+         MultiLevelPageTableVisualizer.logger.warn("\tsegfault: Page Middle Directory does not exist");
          return new Pair<>(-1,-1);
       }
-      //System.out.println("PMD: "+pmd);
+      //MultiLevelPageTableVisualizer.logger.warn("PMD: "+pmd);
       
       // 2) get the PTE address
       short pte = virt_to_pmd(pmd, vaddr);
       if (pte == -1) {
-         System.out.println("\tsegfault: Page Table Entry does not exist");
+         MultiLevelPageTableVisualizer.logger.warn("\tsegfault: Page Table Entry does not exist");
          return new Pair<>(-1,-1);
       }
-      //System.out.println("PTE: "+pte);
+      //MultiLevelPageTableVisualizer.logger.warn("PTE: "+pte);
       
       // 3) get the frame number
       short phs = virt_to_pte(pte, vaddr);
       if (phs == -1) {
-         System.out.println("\tsegfault: Invalid physical memory");
+         MultiLevelPageTableVisualizer.logger.warn("\tsegfault: Invalid physical memory");
          return new Pair<>(-1,-1);
       }
-      //System.out.println("Phys: "+phs);
+      //MultiLevelPageTableVisualizer.logger.warn("Phys: "+phs);
       
       return new Pair<>((int)phs,(vaddr & 0x000F));
    }
